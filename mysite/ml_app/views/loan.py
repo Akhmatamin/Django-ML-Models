@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import generics, views, status
 from rest_framework.response import Response
-from serializer import *
+from mysite.ml_app.serializer import LoanBankSerializer
 import joblib
 
 loan_model = joblib.load('mysite/ml_app/model_pkls/modelLoan.pkl')
@@ -13,7 +13,7 @@ intent = ['EDUCATION','HOMEIMPROVEMENT','MEDICAL','PERSONAL','VENTURE']
 
 class LoanBankAPIView(views.APIView):
     def post(self, request):
-        instance = LoanBankSerializer(data=self.request.data)
+        instance = LoanBankSerializer(data=request.data)
         if instance.is_valid():
             data = instance.validated_data()
             new_gender = data.pop('person_gender')
