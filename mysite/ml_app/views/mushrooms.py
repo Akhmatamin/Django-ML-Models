@@ -1,9 +1,12 @@
 from rest_framework.response import Response
 from rest_framework import views, status
 import joblib
-from mysite.ml_app.serializer import MushroomsSerializer
+from ..serializer import MushroomsSerializer
+import os
+from django.conf import settings
 
-mushroom_model = joblib.load('mysite/ml_app/model_pkls/mushroom_rf_model.pkl')
+model_path = os.path.join(settings.BASE_DIR, 'ml_app', 'model_pkls', 'mushroom_rf_model.pkl')
+mushroom_model = joblib.load(model_path)
 
 
 CAP_SHAPE = ("c", "f", "k", "s", "x")
@@ -33,7 +36,7 @@ class MushroomsAPIView(views.APIView):
     def post(self, request):
         serializer = MushroomsSerializer(data=request.data)
         if serializer.is_valid():
-            data = serializer.validated_data()
+            data = serializer.validated_data
 
             new_cap_shape = data.pop("cap_shape")
             cap_shape0_1 = [
@@ -173,8 +176,5 @@ class MushroomsAPIView(views.APIView):
                         ]
 
             prediction = int(mushroom_model.predict(features)[0])
-            if prediction == 0:
-                return {'Prediction': 'Eatable'}
-            else:
-                return {'Prediction': 'Poisoned'}
+            return Response({'Prediction': 'Eatable' if prediction == 0 else 'Poisonous'})
         return Response(status=status.HTTP_400_BAD_REQUEST)

@@ -1,10 +1,13 @@
 from rest_framework import views, status
 from rest_framework.response import Response
-import joblib
-from mysite.ml_app.serializer import TelecomSerializer
+from ..serializer import TelecomSerializer
+import joblib, os
+from django.conf import settings
 
-telecom_model = joblib.load('mysite/ml_app/model_pkls/telecom_tree_model.pkl')
-telecom_scaler = joblib.load('mysite/ml_app/scaler_pkls/telecom_scaler.pkl')
+model_path = os.path.join(settings.BASE_DIR, 'ml_app', 'model_pkls', 'telecom_tree_model.pkl')
+scaler_path = os.path.join(settings.BASE_DIR, 'ml_app', 'scaler_pkls', 'telecom_scaler.pkl')
+telecom_model = joblib.load(model_path)
+telecom_scaler = joblib.load(scaler_path)
 
 yesNoList = ['Yes']
 MULTIPLELINES = ['No phone service','Yes']
@@ -27,7 +30,7 @@ class TelecomAPIView(views.APIView):
     def post(self, request):
         serializer = TelecomSerializer(data=request.data)
         if serializer.is_valid():
-            data = serializer.validated_data()
+            data = serializer.validated_data
 
             new_gender = data.pop('gender')
             gender01 = [1 if new_gender == 'Male' else 0]
@@ -78,7 +81,7 @@ class TelecomAPIView(views.APIView):
                         lens01 + internet01 + security01 + backup01 + protection01 +
                         support01 + stream01 + movies01 + contract01 + paper01 + method01]
 
-            scaled = telecom_scaler.fit_transform(features)
+            scaled = telecom_scaler.transform(features)
             prediction = int(telecom_model.predict(scaled)[0])
-            return {'Churn:': 'Yes' if prediction == 1 else 'No'}
+            return Response({'Churn:': 'Yes' if prediction == 1 else 'No'})
         return Response(status=status.HTTP_400_BAD_REQUEST)

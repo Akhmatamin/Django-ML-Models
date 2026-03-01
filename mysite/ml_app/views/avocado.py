@@ -1,15 +1,17 @@
 from rest_framework.response import Response
 from rest_framework import views, status
-from mysite.ml_app.serializer import AvocadoSerializer
-import joblib
+from ..serializer import AvocadoSerializer
+import joblib, os
+from django.conf import settings
 
-avocado_model = joblib.load('mysite/ml_app/model_pkls/modelAvo2.pkl')
+model_path = os.path.join(settings.BASE_DIR, settings.BASE_DIR, 'ml_app', 'model_pkls', 'modelAvo2.pkl')
+avocado_model = joblib.load(model_path)
 
 class AvocadoAPIView(views.APIView):
     def post(self, request):
         serializer = AvocadoSerializer(data=request.data)
         if serializer.is_valid():
-            data = serializer.validated_data()
+            data = serializer.validated_data
 
             new_color = data.pop('color_category')
             color0_1 = [
@@ -30,5 +32,5 @@ class AvocadoAPIView(views.APIView):
                 prediction = 'Firm-ripe'
             else:
                 prediction = 'Ripe'
-            return {'Ripeness': prediction}
+            return Response({'Ripeness': prediction})
         return Response(status=status.HTTP_400_BAD_REQUEST)
