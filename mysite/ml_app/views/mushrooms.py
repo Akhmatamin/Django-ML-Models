@@ -8,6 +8,11 @@ from django.conf import settings
 model_path = os.path.join(settings.BASE_DIR, 'ml_app', 'model_pkls', 'mushroom_rf_model.pkl')
 mushroom_model = joblib.load(model_path)
 
+scaler_path_e = os.path.join(settings.BASE_DIR, 'ml_app', 'scaler_pkls', 'employee_scaler.pkl')
+scaler = joblib.load(scaler_path_e)
+
+print(scaler.feature_names_in_)
+
 
 CAP_SHAPE = ("c", "f", "k", "s", "x")
 CAP_SURFACE = ("c", "f", "k", "s", "x")
