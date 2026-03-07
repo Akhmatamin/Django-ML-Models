@@ -6,8 +6,10 @@ pages = st.navigation([
     st.Page("loanfront.py", title="💰 Loan Approval"),
     st.Page("mushrooms_front.py", title="🍄 Mushroom Classification"),
     st.Page("titanic-front.py", title="🚢 Titanic Survival"),
-    st.Page("telecom_front.py", title="Telecom"),
-    st.Page("employee_front.py", title="Employee Attrition")
+    st.Page("telecom_front.py", title="🌐Telecom"),
+    st.Page("employee_front.py", title="💼Employee Attrition"),
+    st.Page('house_front.py', title="🏠House Price"),
+    st.Page('student_front.py', title="🎓Student score"),
 ])
 
 pages.run()

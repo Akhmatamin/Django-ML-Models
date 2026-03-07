@@ -125,3 +125,23 @@ class EmployeeSerializer(serializers.Serializer):
     Department = serializers.CharField()
     JobRole = serializers.CharField()
     MaritalStatus = serializers.CharField()
+
+
+class HousePredictSerializer(serializers.Serializer):
+    GrLivArea = serializers.IntegerField()
+    YearBuilt = serializers.IntegerField()
+    GarageCars = serializers.IntegerField()
+    TotalBsmtSF = serializers.IntegerField()
+    FullBath = serializers.IntegerField()
+    OverallQual = serializers.IntegerField()
+    Neighborhood = serializers.CharField()
+
+
+class StudentSerializer(serializers.Serializer):
+    gender = serializers.CharField()
+    race_ethnicity = serializers.CharField()
+    education = serializers.CharField()
+    lunch = serializers.CharField()
+    test_preparation = serializers.CharField()
+    math_score = serializers.IntegerField()
+    reading_score = serializers.IntegerField()

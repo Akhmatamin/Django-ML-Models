@@ -8,10 +8,8 @@ model_path = os.path.join(settings.BASE_DIR, 'ml_app', 'model_pkls', 'employee_m
 scaler_path = os.path.join(settings.BASE_DIR, 'ml_app', 'scaler_pkls', 'employee_scaler.pkl')
 employee_model = joblib.load(model_path)
 employee_scaler = joblib.load(scaler_path)
-print("scaler expects:", getattr(employee_scaler, "n_features_in_", None))
-
-# если sklearn новый — иногда есть названия колонок
-print("feature names:", getattr(employee_scaler, "feature_names_in_", None))
+# print("scaler expects:", getattr(employee_scaler, "n_features_in_", None))
+# print("feature names:", getattr(employee_scaler, "feature_names_in_", None))
 
 OVERTIME = ['Yes', 'No']
 
